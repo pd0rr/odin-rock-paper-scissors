@@ -33,12 +33,47 @@ function playRound(playerSelection, computerSelection) {
     let cn = ston(computerSelection);
     let score = myMod(pn - cn, 3);
 
-    switch (score) {
+    return score;
+    /*switch (score) {
         case 0:
             return "You Tie!"
         case 1:
             return `You Win! ${playerSelection} beats ${computerSelection}`;
         case 2:
             return `You Lose! ${computerSelection} beats ${playerSelection}`;
+    }*/
+}
+
+
+function game() {
+    // play 5 rounds of rock-paper-scissors.
+    let playerScore = 0;
+    let computerScore = 0;
+
+    for(let i = 0; i < 5; i++) {
+        function printScore(you, CPU) {
+            console.log(`You: ${you} CPU: ${CPU}`);
+        }
+
+        let playerChoice = prompt("Player choice (Rock/Paper/Scissors): ");
+        let computerChoice = computerPlay();
+        console.log(`Computer choice : ${computerChoice}`)
+
+        let gameResult = playRound(playerChoice, computerChoice);
+
+        switch (gameResult) {
+            case 0:
+                console.log("You Tie!");
+                break;
+            case 1:
+                console.log(`You Win! ${playerChoice} beats ${computerChoice}`);
+                playerScore += 1;
+                break;
+            case 2:
+                console.log(`You Lose! ${computerChoice} beats ${playerChoice}`);
+                computerScore += 1;
+                break;
+        }
+        printScore(playerScore, computerScore);
     }
 }
