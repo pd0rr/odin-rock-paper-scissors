@@ -34,14 +34,6 @@ function playRound(playerSelection, computerSelection) {
     let score = myMod(pn - cn, 3);
 
     return score;
-    /*switch (score) {
-        case 0:
-            return "You Tie!"
-        case 1:
-            return `You Win! ${playerSelection} beats ${computerSelection}`;
-        case 2:
-            return `You Lose! ${computerSelection} beats ${playerSelection}`;
-    }*/
 }
 
 
