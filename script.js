@@ -49,7 +49,7 @@ function game() {
 
         let playerChoice = prompt("Player choice (Rock/Paper/Scissors): ");
         let computerChoice = computerPlay();
-        console.log(`Computer choice : ${computerChoice}`)
+        console.log(`Computer choice: ${computerChoice}`)
 
         let gameResult = playRound(playerChoice, computerChoice);
 
@@ -70,18 +70,61 @@ function game() {
     }
 }
 
+function gameResultString(gameResult, playerChoice, computerChoice) {
+    let s;
+    s = `<p>Player choice (Rock/Paper/Scissors): ${playerChoice}</p>\n`;
+    s += `<p>Computer choice: ${computerChoice}</p>\n`;
+    switch (gameResult) {
+        case 0:
+            return s + "<p>You Tie!";
+        case 1:
+            return s + `<p>You Win! ${playerChoice} beats ${computerChoice}</p>\n`;
+        case 2:
+            return s + `<p>You Lose! ${computerChoice} beats ${playerChoice}</p>\n`;
+    }
+}
+
+function addGameResultElements(resultElement, gameResult, playerChoice, computerChoice) {
+    let pc = document.createElement("p");
+    let cc = document.createElement("p");
+    let gr = document.createElement("p");
+
+    pc.textContent = `Player choice (Rock/Paper/Scissors): ${playerChoice}`;
+    cc.textContent = `Computer choice: ${computerChoice}`;
+    switch (gameResult) {
+        case 0:
+            gr.textContent = "You Tie!";
+            break;
+        case 1:
+            gr.textContent = `You Win! ${playerChoice} beats ${computerChoice}`;
+            break;
+        case 2:
+            gr.textContent = `You Lose! ${computerChoice} beats ${playerChoice}`;
+            break;
+    }
+
+    resultElement.appendChild(pc);
+    resultElement.appendChild(cc);
+    resultElement.appendChild(gr);
+}
+
+function makeChoiceEventListener(playerChoice, resultElement) {
+    return function() {
+        let computerChoice = computerPlay();
+
+        //resultElement.textContent = gameResultString(playRound(playerChoice, computerChoice), playerChoice, computerChoice);
+        addGameResultElements(resultElement, playRound(playerChoice, computerChoice), playerChoice, computerChoice);
+    };
+}
+
 // add event listeners
+let resultDiv = document.querySelector("#result");
+
 let rock = document.querySelector("#rock");
-rock.addEventListener('click', function() {
-    console.log(playRound('rock', computerPlay()));
-});
+rock.addEventListener('click', makeChoiceEventListener('rock', resultDiv));
 
 let paper = document.querySelector("#paper");
-paper.addEventListener('click', function() {
-    console.log(playRound('rock', computerPlay()));
-});
+paper.addEventListener('click', makeChoiceEventListener('paper', resultDiv));
 
 let scissors = document.querySelector("#scissors");
-scissors.addEventListener('click', function() {
-    console.log(playRound('scissors', computerPlay()));
-});
+scissors.addEventListener('click', makeChoiceEventListener('scissors', resultDiv));
