@@ -103,6 +103,9 @@ function addGameResultElements(resultElement, gameResult, playerChoice, computer
             break;
     }
 
+    // clear resultElement content.
+    resultElement.innerHTML = '';
+
     resultElement.appendChild(pc);
     resultElement.appendChild(cc);
     resultElement.appendChild(gr);
