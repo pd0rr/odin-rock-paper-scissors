@@ -88,6 +88,7 @@ function addGameResultElements(resultElement, gameResult, playerChoice, computer
     let pc = document.createElement("p");
     let cc = document.createElement("p");
     let gr = document.createElement("p");
+    let score = document.createElement("p");
 
     pc.textContent = `Player choice (Rock/Paper/Scissors): ${playerChoice}`;
     cc.textContent = `Computer choice: ${computerChoice}`;
@@ -102,6 +103,8 @@ function addGameResultElements(resultElement, gameResult, playerChoice, computer
             gr.textContent = `You Lose! ${computerChoice} beats ${playerChoice}`;
             break;
     }
+    
+    score.textContent = scoreString();
 
     // clear resultElement content.
     resultElement.innerHTML = '';
@@ -109,6 +112,7 @@ function addGameResultElements(resultElement, gameResult, playerChoice, computer
     resultElement.appendChild(pc);
     resultElement.appendChild(cc);
     resultElement.appendChild(gr);
+    resultElement.appendChild(score);
 }
 
 function makeChoiceEventListener(playerChoice, resultElement) {
@@ -117,8 +121,8 @@ function makeChoiceEventListener(playerChoice, resultElement) {
 
         //resultElement.textContent = gameResultString(playRound(playerChoice, computerChoice), playerChoice, computerChoice);
         let roundResult = playRound(playerChoice, computerChoice);
-        addGameResultElements(resultElement, roundResult, playerChoice, computerChoice);
         updateScore(roundResult);
+        addGameResultElements(resultElement, roundResult, playerChoice, computerChoice);
     };
 }
 
@@ -137,6 +141,10 @@ function updateScore(roundResult) {
             computerScore += 1;
             break;
     }
+}
+
+function scoreString() {
+    return `You: ${playerScore} CPU: ${computerScore}`;
 }
 
 // add event listeners
