@@ -116,8 +116,27 @@ function makeChoiceEventListener(playerChoice, resultElement) {
         let computerChoice = computerPlay();
 
         //resultElement.textContent = gameResultString(playRound(playerChoice, computerChoice), playerChoice, computerChoice);
-        addGameResultElements(resultElement, playRound(playerChoice, computerChoice), playerChoice, computerChoice);
+        let roundResult = playRound(playerChoice, computerChoice);
+        addGameResultElements(resultElement, roundResult, playerChoice, computerChoice);
+        updateScore(roundResult);
     };
+}
+
+// global variables
+var playerScore = 0;
+var computerScore = 0;
+
+function updateScore(roundResult) {
+    switch (roundResult) {
+        case 0:
+            break;
+        case 1:
+            playerScore += 1;
+            break;
+        case 2:
+            computerScore += 1;
+            break;
+    }
 }
 
 // add event listeners
