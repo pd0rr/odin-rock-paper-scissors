@@ -112,7 +112,7 @@ function addGameResultElements(resultElement, gameResult, playerChoice, computer
     resultElement.appendChild(pc);
     resultElement.appendChild(cc);
     resultElement.appendChild(gr);
-    resultElement.appendChild(score);
+    resultElement.innerHTML += scoreString();
 }
 
 function makeChoiceEventListener(playerChoice, resultElement) {
@@ -131,20 +131,27 @@ var playerScore = 0;
 var computerScore = 0;
 
 function updateScore(roundResult) {
-    switch (roundResult) {
-        case 0:
-            break;
-        case 1:
-            playerScore += 1;
-            break;
-        case 2:
-            computerScore += 1;
-            break;
+    if (playerScore < 5 && computerScore < 5) {
+        switch (roundResult) {
+            case 0:
+                break;
+            case 1:
+                playerScore += 1;
+                break;
+            case 2:
+                computerScore += 1;
+                break;
+        }
     }
 }
 
 function scoreString() {
-    return `You: ${playerScore} CPU: ${computerScore}`;
+    let res = `<p>You: ${playerScore} CPU: ${computerScore}</p>`;
+    if (playerScore == 5)
+        res += `<p>YOU WON THE GAME!</p>`;
+    else if (computerScore == 5)
+        res += `<p>YOU LOST THE GAME!</p>`;
+    return res;
 }
 
 // add event listeners
