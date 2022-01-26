@@ -69,3 +69,19 @@ function game() {
         printScore(playerScore, computerScore);
     }
 }
+
+// add event listeners
+let rock = document.querySelector("#rock");
+rock.addEventListener('click', function() {
+    console.log(playRound('rock', computerPlay()));
+});
+
+let paper = document.querySelector("#paper");
+paper.addEventListener('click', function() {
+    console.log(playRound('rock', computerPlay()));
+});
+
+let scissors = document.querySelector("#scissors");
+scissors.addEventListener('click', function() {
+    console.log(playRound('scissors', computerPlay()));
+});
