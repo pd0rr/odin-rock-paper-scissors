@@ -14,11 +14,19 @@ function computerPlay() {
     }
 }
 
-function computerPlay_freq() {
+/*function computerPlay_freq() {
     let rand = Math.random();
     console.log(rand);
     if (rand < frequencies[0]) return "Paper";
     else if (rand < frequencies[0] + frequencies[1]) return "Scissors";
+    else return "Rock";
+}*/
+
+function computerPlay_freq() {
+    let rand = Math.random();
+    console.log(rand);
+    if (rand < pattern[lastMove][0]) return "Paper";
+    else if (rand < pattern[lastMove][0] + pattern[lastMove][1]) return "Scissors";
     else return "Rock";
 }
 
@@ -141,13 +149,12 @@ var playerScore = 0;
 var computerScore = 0;
 
 var frequencies = [1/3, 1/3, 1/3];
-var lastMove = "";
+var lastMove = 0;
 var pattern = [[1/3, 1/3, 1/3],[1/3, 1/3, 1/3],[1/3, 1/3, 1/3]];
 
 // update opponent analytics
 function updateData(playerChoice) {
 
-    lastMove = playerChoice;
     // let's do a moving average over 10 rounds
     let f = frequencies[playerChoice];
     frequencies[playerChoice] = f * 9/10 + 1/10;
@@ -158,6 +165,17 @@ function updateData(playerChoice) {
         if (i != playerChoice) {
             frequencies[i] = frequencies[i] / total;
         }
+
+    // now take care of patterns.
+    f = pattern[lastMove][playerChoice];
+    pattern[lastMove][playerChoice] = f * 4/5 + 1/5;
+    total = pattern[lastMove].reduce((a,b)=>a+b, 0);
+    for (let i = 0; i < 3; i++)
+        if (i != playerChoice) {
+            pattern[lastMove][i] = pattern[lastMove][i] / total;
+        }
+    
+    lastMove = playerChoice;
 }
 
 function updateScore(roundResult) {
