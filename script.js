@@ -168,7 +168,7 @@ function updateData(playerChoice) {
 
     // now take care of patterns.
     f = pattern[lastMove][playerChoice];
-    pattern[lastMove][playerChoice] = f * 4/5 + 1/5;
+    pattern[lastMove][playerChoice] = f * 9/10 + 1/10;
     total = pattern[lastMove].reduce((a,b)=>a+b, 0);
     for (let i = 0; i < 3; i++)
         if (i != playerChoice) {
@@ -179,7 +179,7 @@ function updateData(playerChoice) {
 }
 
 function updateScore(roundResult) {
-    if (playerScore < 10 && computerScore < 10) {
+    if (playerScore < 100 && computerScore < 100) {
         switch (roundResult) {
             case 0:
                 break;
@@ -195,9 +195,9 @@ function updateScore(roundResult) {
 
 function scoreString() {
     let res = `<p>You: ${playerScore} CPU: ${computerScore}</p>`;
-    if (playerScore == 10)
+    if (playerScore == 100)
         res += `<p>YOU WON THE GAME!</p>`;
-    else if (computerScore == 10)
+    else if (computerScore == 100)
         res += `<p>YOU LOST THE GAME!</p>`;
     return res;
 }
@@ -205,8 +205,9 @@ function scoreString() {
 function key_event_listener(key) {
     let playerChoice = "";
     if (key.key == "q") playerChoice = "rock";
-    if (key.key == "w") playerChoice = "paper";
-    if (key.key == "e") playerChoice = "scissors";
+    else if (key.key == "w") playerChoice = "paper";
+    else if (key.key == "e") playerChoice = "scissors";
+    else return;
 
     let computerChoice = computerPlay_freq();
 
