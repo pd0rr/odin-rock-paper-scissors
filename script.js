@@ -202,14 +202,33 @@ function scoreString() {
     return res;
 }
 
+function key_event_listener(key) {
+    let playerChoice = "";
+    if (key.key == "q") playerChoice = "rock";
+    if (key.key == "w") playerChoice = "paper";
+    if (key.key == "e") playerChoice = "scissors";
+
+    let computerChoice = computerPlay_freq();
+
+    let roundResult = playRound(playerChoice, computerChoice);
+    updateScore(roundResult);
+    addGameResultElements(resultDiv, roundResult, playerChoice, computerChoice);
+}
+
 // add event listeners
 let resultDiv = document.querySelector("#result");
 
+let rock_el = makeChoiceEventListener('rock', resultDiv);
+let paper_el = makeChoiceEventListener('paper', resultDiv);
+let scissors_el = makeChoiceEventListener('scissors', resultDiv);
+
 let rock = document.querySelector("#rock");
-rock.addEventListener('click', makeChoiceEventListener('rock', resultDiv));
+rock.addEventListener('click', rock_el);
 
 let paper = document.querySelector("#paper");
-paper.addEventListener('click', makeChoiceEventListener('paper', resultDiv));
+paper.addEventListener('click', paper_el);
 
 let scissors = document.querySelector("#scissors");
-scissors.addEventListener('click', makeChoiceEventListener('scissors', resultDiv));
+scissors.addEventListener('click', scissors_el);
+
+addEventListener('keyup', key_event_listener);
