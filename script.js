@@ -14,6 +14,14 @@ function computerPlay() {
     }
 }
 
+function computerPlay_freq() {
+    let rand = Math.random();
+    console.log(rand);
+    if (rand < frequencies[0]) return "Paper";
+    else if (rand < frequencies[0] + frequencies[1]) return "Scissors";
+    else return "Rock";
+}
+
 function playRound(playerSelection, computerSelection) {
     function ston(s) {
         switch (s.toLowerCase()) {
@@ -33,6 +41,8 @@ function playRound(playerSelection, computerSelection) {
     let cn = ston(computerSelection);
     let score = myMod(pn - cn, 3);
 
+    updateData(ston(playerSelection));
+
     return score;
 }
 
@@ -42,13 +52,13 @@ function game() {
     let playerScore = 0;
     let computerScore = 0;
 
-    for(let i = 0; i < 5; i++) {
+    for(let i = 0; i < 10; i++) {
         function printScore(you, CPU) {
             console.log(`You: ${you} CPU: ${CPU}`);
         }
 
         let playerChoice = prompt("Player choice (Rock/Paper/Scissors): ");
-        let computerChoice = computerPlay();
+        let computerChoice = computerPlay_freq();
         console.log(`Computer choice: ${computerChoice}`)
 
         let gameResult = playRound(playerChoice, computerChoice);
@@ -117,7 +127,7 @@ function addGameResultElements(resultElement, gameResult, playerChoice, computer
 
 function makeChoiceEventListener(playerChoice, resultElement) {
     return function() {
-        let computerChoice = computerPlay();
+        let computerChoice = computerPlay_freq();
 
         //resultElement.textContent = gameResultString(playRound(playerChoice, computerChoice), playerChoice, computerChoice);
         let roundResult = playRound(playerChoice, computerChoice);
@@ -130,8 +140,28 @@ function makeChoiceEventListener(playerChoice, resultElement) {
 var playerScore = 0;
 var computerScore = 0;
 
+var frequencies = [1/3, 1/3, 1/3];
+var lastMove = "";
+var pattern = [[1/3, 1/3, 1/3],[1/3, 1/3, 1/3],[1/3, 1/3, 1/3]];
+
+// update opponent analytics
+function updateData(playerChoice) {
+
+    lastMove = playerChoice;
+    // let's do a moving average over 10 rounds
+    let f = frequencies[playerChoice];
+    frequencies[playerChoice] = f * 9/10 + 1/10;
+    let total = frequencies.reduce((a,b) => a+b, 0);
+
+    // renormalize
+    for (let i = 0; i < 3; i++)
+        if (i != playerChoice) {
+            frequencies[i] = frequencies[i] / total;
+        }
+}
+
 function updateScore(roundResult) {
-    if (playerScore < 5 && computerScore < 5) {
+    if (playerScore < 10 && computerScore < 10) {
         switch (roundResult) {
             case 0:
                 break;
@@ -147,9 +177,9 @@ function updateScore(roundResult) {
 
 function scoreString() {
     let res = `<p>You: ${playerScore} CPU: ${computerScore}</p>`;
-    if (playerScore == 5)
+    if (playerScore == 10)
         res += `<p>YOU WON THE GAME!</p>`;
-    else if (computerScore == 5)
+    else if (computerScore == 10)
         res += `<p>YOU LOST THE GAME!</p>`;
     return res;
 }
