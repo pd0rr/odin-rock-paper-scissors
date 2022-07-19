@@ -264,6 +264,8 @@ var lmCPU;
 
 // update opponent analytics
 function updateData(playerChoice, computerChoice) {
+    // over time, revert to zero
+    counts.map(x => x.map(y => y.map(z => 0.95 * z)));
 
     // update move counts
     if (lmPlayer !== undefined && lmCPU !== undefined) {
