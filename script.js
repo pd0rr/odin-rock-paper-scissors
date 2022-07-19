@@ -112,7 +112,12 @@ function computerPlay_freq() {
 
     //console.log(tot, weights);
 
-    let max = Math.max(...weights);
+    console.log(rand);
+    if (rand < weights[0]) return "Paper";
+    else if (rand < weights[0] + weights[1]) return "Scissors";
+    else return "Rock";
+
+    /*let max = Math.max(...weights);
     let f = weights.map(x => x == max);
     let count = f.reduce((a, x) => x? a+1 : a, 0);
     let choice = Math.floor(rand * count)
@@ -128,7 +133,9 @@ function computerPlay_freq() {
             }
         c++;
         }
-    }
+    }*/
+
+
 
     //console.log(`Hello! ${f}, ${choice}, ${pChoice}`);
 
