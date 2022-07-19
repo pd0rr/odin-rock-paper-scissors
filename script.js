@@ -22,8 +22,18 @@ function computerPlay() {
     else return "Rock";
 }*/
 
-// 
-function squash(dim) {
+function vectorSum(v, w) {
+    return v.map((e,i) => e+w[i]);
+}
+
+function squashed(dim) {
+    if (dim == 0) {
+        return counts.map(row => row.reduce((a, el) => vectorSum(a,el), [0,0,0]));
+    } else if (dim == 1) {
+        return counts.reduce((a,el) => a.map((e, i) => vectorSum(e, el[i])), [[0,0,0],[0,0,0],[0,0,0]])
+    } else {
+        return counts.map(row => row.reduce((a, el) => vectorSum(a,el), [0,0,0])).reduce((a, el) => vectorSum(a, el), [0,0,0]);
+    }
 
 }
 
