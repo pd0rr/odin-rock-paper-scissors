@@ -22,6 +22,11 @@ function computerPlay() {
     else return "Rock";
 }*/
 
+// 
+function squash(dim) {
+
+}
+
 function computerPlay_freq() {
 
     // if this is the first move, just play randomly.
@@ -32,6 +37,8 @@ function computerPlay_freq() {
 
     let tot = cs.reduce((a, x) => a+x, 0);
     let weights = cs.map(x => x / tot);
+
+    let confidence = Math.sqrt(tot) / tot;
 
     console.log(tot, weights);
 
