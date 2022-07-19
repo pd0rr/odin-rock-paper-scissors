@@ -23,10 +23,35 @@ function computerPlay() {
 }*/
 
 function computerPlay_freq() {
+
+    // if this is the first move, just play randomly.
+    if (lmPlayer === undefined || lmCPU === undefined) return computerPlay();
+
     let rand = Math.random();
-    console.log(rand);
-    if (rand < pattern[lastMove][0]) return "Paper";
-    else if (rand < pattern[lastMove][0] + pattern[lastMove][1]) return "Scissors";
+    // Counter whatever the player is most likely to choose.
+    let cs = counts[lmPlayer][lmCPU];
+    let max = Math.max(...cs);
+    let f = cs.map(x => x == max);
+    let count = f.reduce((a, x) => x? a+1 : a, 0);
+    let choice = Math.floor(rand * count)
+
+    let pChoice;
+    let c = 0;
+    for (let i = 0; i < 3; i++) {
+        if (f[i]) {
+            console.log(c, choice, c==choice);
+            if (c == choice){
+                pChoice = i;
+                break;
+            }
+        c++;
+        }
+    }
+
+    console.log(`Hello! ${f}, ${choice}, ${pChoice}`);
+
+    if (pChoice == 0) return "Paper";
+    else if (pChoice == 1) return "Scissors";
     else return "Rock";
 }
 
@@ -49,7 +74,7 @@ function playRound(playerSelection, computerSelection) {
     let cn = ston(computerSelection);
     let score = myMod(pn - cn, 3);
 
-    updateData(ston(playerSelection));
+    updateData(pn, cn);
 
     return score;
 }
@@ -148,12 +173,26 @@ function makeChoiceEventListener(playerChoice, resultElement) {
 var playerScore = 0;
 var computerScore = 0;
 
-var frequencies = [1/3, 1/3, 1/3];
-var lastMove = 0;
-var pattern = [[1/3, 1/3, 1/3],[1/3, 1/3, 1/3],[1/3, 1/3, 1/3]];
+// player last move, cpu last move, rock paper scissors.
+var counts = [[[0,0,0], [0,0,0], [0,0,0]],
+              [[0,0,0], [0,0,0], [0,0,0]],
+              [[0,0,0], [0,0,0], [0,0,0]]];
+var lmPlayer;
+var lmCPU;
 
 // update opponent analytics
-function updateData(playerChoice) {
+function updateData(playerChoice, computerChoice) {
+
+    // update move counts
+    if (lmPlayer !== undefined && lmCPU !== undefined) {
+        counts[lmPlayer][lmCPU][playerChoice] += 1;
+    }
+
+    lmPlayer = playerChoice;
+    lmCPU = computerChoice;
+}
+
+/*function updateData(playerChoice) {
 
     // let's do a moving average over 10 rounds
     let f = frequencies[playerChoice];
@@ -176,7 +215,7 @@ function updateData(playerChoice) {
         }
     
     lastMove = playerChoice;
-}
+}*/
 
 function updateScore(roundResult) {
     if (playerScore < 100 && computerScore < 100) {
