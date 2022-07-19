@@ -48,34 +48,47 @@ function find_pattern() {
     let lplc = [[1/3, 1/3, 1/3], 0];
     // last player move + last computer move.
     let tot = cs.reduce((a, x) => a+x, 0);
-    lplc[0] = cs.map(x => x / tot);
+    if (tot != 0)
+        lplc[0] = cs.map(x => x / tot);
+    else
+        lplc[0] = [1/3, 1/3, 1/3];
     lplc[1] = tot;
 
     // only player move.
     let pc = [[1/3, 1/3, 1/3], 0];
     let mat = squashed(0)[lmPlayer];
     tot = mat.reduce((a, x) => a+x, 0);
-    pc[0] = mat.map(x => x / tot);
+    if (tot != 0)
+        pc[0] = mat.map(x => x / tot);
+    else
+        pc[0] = [1/3, 1/3, 1/3];
     pc[1] = tot;
 
     // only computer move.
     let cc = [[1/3, 1/3, 1/3], 0];
     mat = squashed(1)[lmCPU];
     tot = mat.reduce((a, x) => a+x, 0);
-    cc[0] = mat.map(x => x / tot);
+    if (tot != 0)
+        cc[0] = mat.map(x => x / tot);
+    else
+        cc[0] = [1/3, 1/3, 1/3];
     cc[1] = tot;
 
     // Just frequency.
     let fc = [[1/3, 1/3, 1/3], 0];
     mat = squashed(2);
     tot = mat.reduce((a, x) => a+x, 0);
-    fc[0] = mat.map(x => x / tot);
+    if (tot != 0)
+        fc[0] = mat.map(x => x / tot);
+    else
+        fc[0] = [1/3, 1/3, 1/3];
     fc[1] = tot;
 
     console.log(mat, tot);
     // now average the probabilities, accounting for confidence. Should we detrend?
     let ws = [lplc[1], pc[1], cc[1], fc[1]];
     tot = lplc[1] + pc[1] + cc[1] + fc[1];
+
     let sum = [scale(lplc[1], lplc[0]), scale(pc[1], pc[0]), scale(cc[1], cc[0]), scale(fc[1], fc[0])].reduce(vectorSum, [0,0,0]);
     let avg = scale(1/tot, sum);
 
