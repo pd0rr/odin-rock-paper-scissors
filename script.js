@@ -28,10 +28,15 @@ function computerPlay_freq() {
     if (lmPlayer === undefined || lmCPU === undefined) return computerPlay();
 
     let rand = Math.random();
-    // Counter whatever the player is most likely to choose.
     let cs = counts[lmPlayer][lmCPU];
-    let max = Math.max(...cs);
-    let f = cs.map(x => x == max);
+
+    let tot = cs.reduce((a, x) => a+x, 0);
+    let weights = cs.map(x => x / tot);
+
+    console.log(tot, weights);
+
+    let max = Math.max(...weights);
+    let f = weights.map(x => x == max);
     let count = f.reduce((a, x) => x? a+1 : a, 0);
     let choice = Math.floor(rand * count)
 
